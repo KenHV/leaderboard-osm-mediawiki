@@ -4,7 +4,18 @@ import xml.etree.ElementTree as ET
 import aiohttp
 
 
-def calculate_total_score(xml: str, skip_last: bool = False) -> int:
+async def get_changeset(user: str, time: str = None) -> str:
+    url = "https://api.openstreetmap.org/api/0.6/changesets"
+    params = {"display_name": user}  # "time": time.strftime("%Y-%m-%dT%H:%M:%SZ")
+    if time:
+        params["time"] = time
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, params=params) as response:
+            xml = await response.text()
+    return xml
+
+
+def calculate_score(xml: str, skip_last: bool = False) -> int:
     root = ET.fromstring(xml)
     total_score = 0
     if skip_last:
@@ -15,15 +26,10 @@ def calculate_total_score(xml: str, skip_last: bool = False) -> int:
     return total_score
 
 
-async def get_changeset(user: str, time: str = None) -> str:
-    url = "https://api.openstreetmap.org/api/0.6/changesets"
-    params = {"display_name": user}  # "time": time.strftime("%Y-%m-%dT%H:%M:%SZ")
-    if time:
-        params["time"] = time
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url, params=params) as response:
-            xml = await response.text()
-    return xml
+async def osm_get_score(user: str) -> int:
+    response = await get_changeset(user)
+    score = calculate_score(response)
+    return score
 
 
 async def main():
@@ -36,7 +42,7 @@ async def main():
         xml = await get_changeset(user)
 
     try:
-        score = calculate_total_score(xml)
+        score = calculate_score(xml)
     except Exception:
         print("Couldn't fetch score.")
         return
