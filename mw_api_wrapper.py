@@ -21,7 +21,11 @@ async def get_response(user: str) -> str:
 async def main():
     user = input("Enter username: ")
     json = await get_response(user)
-    score = json["query"]["users"][0]["editcount"]  # type: ignore
+    try:
+        score = json["query"]["users"][0]["editcount"]  # type: ignore
+    except Exception:
+        print("Couldn't fetch score.")
+        return
 
     print(f"User: {user} | Score: {score}")
 

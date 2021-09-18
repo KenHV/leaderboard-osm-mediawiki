@@ -35,7 +35,11 @@ async def main():
     else:
         xml = await get_changeset(user)
 
-    score = calculate_total_score(xml)
+    try:
+        score = calculate_total_score(xml)
+    except Exception:
+        print("Couldn't fetch score.")
+        return
 
     print(f"User: {user} | Score: {score}")
 
