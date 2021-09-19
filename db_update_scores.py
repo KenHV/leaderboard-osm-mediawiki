@@ -1,8 +1,8 @@
 import aiosqlite
 import asyncio
 
-from mw_api_wrapper import mw_get_score
-from osm_api_wrapper import osm_get_score
+from leaderboard.mainpage.mw_api_wrapper import mw_get_score
+from leaderboard.mainpage.osm_api_wrapper import osm_get_score
 
 
 async def osm_update_scoreboard(db: aiosqlite.Connection) -> None:
@@ -14,7 +14,7 @@ async def osm_update_scoreboard(db: aiosqlite.Connection) -> None:
 
         for user in users:
             # 0: user_email, 1: osm_username, 2: osm_orig_score, 3: osm_current_score
-            current_score = await osm_get_score(user[1])
+            current_score = await osm_get_score(user[1])  # osm_username
             current_score -= user[2]  # osm_orig_score
 
             await cursor.execute(
@@ -38,12 +38,17 @@ async def mw_update_scoreboard(db: aiosqlite.Connection) -> None:
             )  # user_email
 
 
+async def update_scoreboard(db: aiosqlite.Connection) -> None:
+    await osm_update_scoreboard(db)
+    await mw_update_scoreboard(db)
+    await db.commit()
+
+
 async def main():
-    async with aiosqlite.connect("data.sqlite3") as db:
-        await osm_update_scoreboard(db)
-        await mw_update_scoreboard(db)
-        await db.commit()
+    db_file = "data.sqlite3"
+    async with aiosqlite.connect(db_file) as db:
+        await update_scoreboard(db)
 
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+if __name__ == "__main__":
+    asyncio.run(main())
