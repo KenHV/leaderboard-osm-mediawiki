@@ -38,9 +38,25 @@ async def mw_update_scoreboard(db: aiosqlite.Connection) -> None:
             )  # user_email
 
 
+async def update_total_score(db: aiosqlite.Connection) -> None:
+    async with db.cursor() as cursor:
+        await cursor.execute(
+            "SELECT user_email, osm_current_score, mw_current_score, total_score FROM leaderboard;"
+        )
+        users = await cursor.fetchall()
+        for user in users:
+            # 0: user_email, 1: osm_current_score, 2: mw_current_score, 3: total_score
+            total_score = user[1] + user[2]
+
+            await cursor.execute(
+                f"UPDATE leaderboard SET total_score={total_score} WHERE user_email={user[0]}"
+            )  # user_email
+
+
 async def update_scoreboard(db: aiosqlite.Connection) -> None:
     await osm_update_scoreboard(db)
     await mw_update_scoreboard(db)
+    await update_total_score(db)
     await db.commit()
 
 
