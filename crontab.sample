@@ -1,0 +1,2 @@
+# Update database every 6 hours
+0 */6 * * * python3 /path/to/leaderboard-osm-mediawiki/db_update_scores.py
