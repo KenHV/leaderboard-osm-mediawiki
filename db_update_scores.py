@@ -22,6 +22,7 @@ async def osm_update_scoreboard(db: aiosqlite.Connection) -> None:
             await cursor.execute(
                 f"UPDATE leaderboard SET osm_current_score={current_score} WHERE user_email={user[0]}"
             )  # user_email
+        await db.commit()
 
 
 async def mw_update_scoreboard(db: aiosqlite.Connection) -> None:
@@ -38,6 +39,7 @@ async def mw_update_scoreboard(db: aiosqlite.Connection) -> None:
             await cursor.execute(
                 f"UPDATE leaderboard SET mw_current_score={current_score} WHERE user_email={user[0]}"
             )  # user_email
+        await db.commit()
 
 
 async def update_total_score(db: aiosqlite.Connection) -> None:
@@ -48,18 +50,18 @@ async def update_total_score(db: aiosqlite.Connection) -> None:
         users = await cursor.fetchall()
         for user in users:
             # 0: user_email, 1: osm_current_score, 2: mw_current_score, 3: total_score
-            total_score = user[1] + user[2]
+            total_score = user[1] + user[2]  # osm_current_score + mw_current_score
 
             await cursor.execute(
                 f"UPDATE leaderboard SET total_score={total_score} WHERE user_email={user[0]}"
             )  # user_email
+        await db.commit()
 
 
 async def update_scoreboard(db: aiosqlite.Connection) -> None:
     await osm_update_scoreboard(db)
     await mw_update_scoreboard(db)
     await update_total_score(db)
-    await db.commit()
 
 
 async def main():
