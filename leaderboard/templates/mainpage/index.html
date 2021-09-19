@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/skeleton.css' %}">
+    <title>Leaderboard</title>
+</head>
+
+<body>
+    <div class="container" style="margin-top: 10px">
+        <div>
+            <center>
+                <img src="{% static 'images/location.gif' %}" width="150px" height="110px"><br />
+                <small>Sept. 18-19, 2021</small>
+                <h4><a href="https://fshm.org/" target="_blank">Hackathon</a></h4>
+                <label for="osmDisplayName">Enter Your OpenStreetMap Display Name</label>
+                <p><small>(If you don't have one, create an account in
+                        <a target="_blank" href="https://www.openstreetmap.org/user/new">OSM</a>
+                        and submit your Display Name here.)</small></p>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <label id="error" style="color: red"></label>
+                    {{ form.display_name }}<br />
+                    <!-- <input type="text" placeholder="OpenStreetMap username"name="osm_username" id="osm_username"> <br/> -->
+                    {{ form.osm_username }}<br />
+                    <!-- <input type="text" placeholder="mediawiki username"name="mw_username" id="mw_username"> <br/> -->
+                    {{ form.mw_username }}<br />
+                    {{ form.email }}<br />
+                    <input type="submit" class="button-primary" value="Register">
+                </form>
+        </div>
+        <p style="text-align: center;"><small><a href="/leaderboard">View Leaderboard</a></small></p>
+        </center>
+    </div>
+    </div>
+</body>
+
+</html>

@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('',),
-    path('osm/', include('osm_data')),
+    path('', include('mainpage.urls')),
+    path('leaderboard/', include('view_leaderboard.urls')),
     path('admin/', admin.site.urls),
 ]

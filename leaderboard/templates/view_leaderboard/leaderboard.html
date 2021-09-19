@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Oxygen:wght@700&family=Work+Sans&display=swap" rel="stylesheet"> 
 </head>
 
@@ -20,7 +20,6 @@
 
     <table>
         <!--table heads-->
-
         <tr>
             <th scope="col" id="c1">Rank</th>
             <th scope="col" id="c2">Name</th>
@@ -29,13 +28,13 @@
 
 
         <!--table datas-->
-
+        {% for data in datas %}
         <tr>
             <td headers="c1">1</td>
-            <td headers="c2">aaa</td>
-            <td headers="c3">100</td>
+            <td headers="c2">{{ data.display_name }}</td>
+            <td headers="c3">{{ data.total_score }}</td>
         </tr>
-
+        {% endfor %}
         <tr>
             <td headers="c1">2</td>
             <td headers="c2">bbb</td>
@@ -65,7 +64,6 @@
             <td headers="c2">fff</td>
             <td headers="c3">50</td>
         </tr>
-
     </table>
 </body>
 

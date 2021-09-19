@@ -50,5 +50,5 @@ async def main():
     print(f"User: {user} | Score: {score}")
 
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(main())
