@@ -6,4 +6,3 @@ venv
 **/media/*
 **/media/!default!.jpg
 
-*.sqlite3
