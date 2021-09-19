@@ -65,7 +65,7 @@ async def update_scoreboard(db: aiosqlite.Connection) -> None:
 
 
 async def main():
-    db_name = "db.sqlite3"
+    db_name = "leaderboard/db.sqlite3"
     db_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), db_name)
 
     async with aiosqlite.connect(db_path) as db:
