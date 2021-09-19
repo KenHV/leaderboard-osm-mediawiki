@@ -23,7 +23,7 @@
                         and submit your Display Name here.)</small></p>
                 <form action="" method="post">
                     {% csrf_token %}
-                    <label id="error" style="color: red"></label>
+                    <p id="error" style="color: red">{{ error }}</p>
                     {{ form.display_name }}<br />
                     <!-- <input type="text" placeholder="OpenStreetMap username"name="osm_username" id="osm_username"> <br/> -->
                     {{ form.osm_username }}<br />
