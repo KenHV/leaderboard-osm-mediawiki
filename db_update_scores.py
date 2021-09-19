@@ -1,5 +1,7 @@
-import aiosqlite
 import asyncio
+import os
+
+import aiosqlite
 
 from leaderboard.mainpage.mw_api_wrapper import mw_get_score
 from leaderboard.mainpage.osm_api_wrapper import osm_get_score
@@ -61,8 +63,10 @@ async def update_scoreboard(db: aiosqlite.Connection) -> None:
 
 
 async def main():
-    db_file = "data.sqlite3"
-    async with aiosqlite.connect(db_file) as db:
+    db_name = "db.sqlite3"
+    db_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), db_name)
+
+    async with aiosqlite.connect(db_path) as db:
         await update_scoreboard(db)
 
 
